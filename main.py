@@ -5,13 +5,13 @@ from streamlit_folium import st_folium
 
 # 1. 페이지 설정
 st.set_page_config(
-    page_title="수달의후쿠오카여행",
-    page_icon="⛩️",
+    page_title="수달의 후쿠오카 여행",
+    page_icon="🦦",
     layout="centered",
     initial_sidebar_state="collapsed"
 )
 
-# 2. 커스텀 CSS (다크모드 글자 안 보임 현상 완벽 해결)
+# 2. 커스텀 CSS (다크모드 글자색 고정 및 타이틀 스타일)
 st.markdown("""
 <style>
     #MainMenu { visibility: hidden; }
@@ -52,7 +52,7 @@ st.markdown("""
 # 3. 인앱 브라우저 안내
 st.warning("⚠️ **카카오톡으로 접속하신 경우**\n지도가 제대로 안 뜨면 우측 상단 `⋮` (또는 하단 `⋯`) 누르고 **'다른 브라우저로 열기'**(Safari/Chrome)를 선택해 주세요!")
 
-st.title("⛩️ 후쿠오카 스마트 가이드")
+st.title("🦦 수달의 후쿠오카 여행")
 st.caption("📱 폰에서 한눈에 보는 현지 맛집 · 관광지 · 교통 · 주의지역")
 
 # 4. 전체 데이터
