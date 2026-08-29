@@ -52,16 +52,16 @@ with tab1:
     # 카테고리 필터
     selected_cat = st.radio("카테고리 필터:", ["전체", "🍜 맛집", "⚠️ 위험/주의", "✈️ 공항/교통"], horizontal=True)
 
-    # 한글 지원 브이월드(Vworld) 지도 타일 설정
-    vworld_tile = "https://xdworld.vworld.kr/2d/Base/service/{z}/{x}/{y}.png"
-    vworld_attr = "Vworld Map"
+    # Google Maps 타일 설정 (한국어 버전)
+    google_tile = "https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}&hl=ko"
+    google_attr = "&copy; Google Maps"
 
     # Folium 지도 생성 (후쿠오카 중심)
     m = folium.Map(
         location=[33.5902, 130.4017], 
         zoom_start=13, 
-        tiles=vworld_tile, 
-        attr=vworld_attr
+        tiles=google_tile, 
+        attr=google_attr
     )
 
     for loc in LOCATIONS:
@@ -105,7 +105,7 @@ with tab3:
 
 with tab4:
     st.subheader("✈️ 공항 및 교통 가이드")
-    st.info("💡 **후쿠오카 공항 → 도심 이동법**\n1. 국제선 도착 후 **무료 셔틀버스** 타고 국내선 이동 (약 10~15분)\n2. 국내선 연결 **지하철 탑승** → 하카타역(5분), 텐진역(11분)")
+    st.info("💡 **후쿠오카 공항 → 도심 이동법**\n1. 국제선 도착 후 **무료 셔틀버스** 타고 국내선 이동 (약 10~15분)\n2. 국내선 연결 **지하철 탑승** (하카타역까지 5분, 편도 ¥100~)\n3. IC카드 \"SUGOCA\" 구입 추천 (공항 역에서 구입, 전국 사용 가능)")
     for loc in [l for l in LOCATIONS if l["cat"] == "Transport"]:
         st.markdown(f"""
         <div class="info-card">
@@ -117,7 +117,7 @@ with tab4:
 with tab5:
     st.subheader("🗓️ 2박 3일 퀵 알짜 코스")
     with st.expander("1일차: 공항 도착 & 하카타/나카스"):
-        st.write("・ 공항 도착 후 지하철로 하카타 이동\n・ 호텔 체크인 후 신신라멘 점심\n・ 캐널시티 쇼핑 & 분수쇼\n・ 저녁: 모츠나베 오오야마 & 나카스 야경 산책")
+        st.write("・ 공항 도착 후 지하철로 하카타 이동\n・ 호텔 체크인 후 신신라멘 점심\n・ 캐널시티 쇼핑 & 분수쇼\n・ 저녁: 모츠나베 오오야마 & 야타이 거리 포장마차")
     with st.expander("2일차: 텐진 쇼핑 & 오호리 공원"):
         st.write("・ 오호리 공원 & 스타벅스에서 아침 산책\n・ 텐진 지하상가 및 파르코 백화점 쇼핑\n・ 저녁: 야키토리 맛집 탐방")
     with st.expander("3일차: 다자이후 후시미 & 귀국"):
