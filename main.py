@@ -254,3 +254,16 @@ with tab5:
 with tab6:
     st.subheader("🗓️ 추천 코스")
     st.write("1일차: 공항 → 하카타역 → 캐널시티\n2일차: 오호리 공원 → 모모치 해변 → 텐진")
+
+# 하단 왕관/배지 실시간 강제 삭제 스크립트
+st.components.v1.html("""
+<script>
+    function removeBadge() {
+        var badges = window.parent.document.querySelectorAll('div[class*="viewerBadge"], [data-testid="stStatusWidget"], #ViewerBadge, iframe[title="streamlit_sharing_badge"], [data-testid="manage-app-button"]');
+        badges.forEach(function(el) {
+            el.remove();
+        });
+    }
+    setInterval(removeBadge, 200);
+</script>
+""", height=0)
