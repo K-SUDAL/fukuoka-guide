@@ -5,13 +5,13 @@ from streamlit_folium import st_folium
 
 # 1. 페이지 설정
 st.set_page_config(
-    page_title="후쿠오카 모바일 가이드",
+    page_title="수달의 후쿠오카 여행",
     page_icon="⛩️",
     layout="centered",
     initial_sidebar_state="collapsed"
 )
 
-# 2. 커스텀 CSS
+# 2. 커스텀 CSS (다크모드 글자 안 보임 현상 완벽 해결)
 st.markdown("""
 <style>
     #MainMenu { visibility: hidden; }
@@ -21,19 +21,31 @@ st.markdown("""
     .stTabs [data-baseweb="tab-list"] { gap: 4px; }
     .stTabs [data-baseweb="tab"] { font-size: 13px; font-weight: bold; padding: 6px 8px; }
     
-    .sight-card { background-color: #fcf4ff; border-left: 5px solid #9b59b6; padding: 12px; border-radius: 6px; margin-bottom: 12px; }
-    .sight-card h4 { color: #111111 !important; margin-bottom: 6px; font-weight: bold; }
-    
-    .food-card { background-color: #f6fff5; border-left: 5px solid #28a745; padding: 12px; border-radius: 6px; margin-bottom: 12px; }
-    .food-card h4 { color: #111111 !important; margin-bottom: 6px; font-weight: bold; }
-    
-    .warning-card { background-color: #fff2f2; border-left: 5px solid #ff4d4d; padding: 12px; border-radius: 6px; margin-bottom: 12px; }
-    .warning-card h4 { color: #111111 !important; margin-bottom: 6px; font-weight: bold; }
-    
-    .info-card { background-color: #f0f7ff; border-left: 5px solid #0066cc; padding: 12px; border-radius: 6px; margin-bottom: 12px; }
-    .info-card h4 { color: #111111 !important; margin-bottom: 6px; font-weight: bold; }
-    
-    .card-detail { font-size: 13px; color: #333333 !important; margin-top: 4px; }
+    /* 카드 공통 스타일 및 글자색 강제 고정 */
+    .sight-card, .food-card, .warning-card, .info-card {
+        padding: 12px;
+        border-radius: 6px;
+        margin-bottom: 12px;
+    }
+    .sight-card { background-color: #fcf4ff; border-left: 5px solid #9b59b6; }
+    .food-card { background-color: #f6fff5; border-left: 5px solid #28a745; }
+    .warning-card { background-color: #fff2f2; border-left: 5px solid #ff4d4d; }
+    .info-card { background-color: #f0f7ff; border-left: 5px solid #0066cc; }
+
+    /* 카드 내부 제목 및 본문 글자색 강제 고정 (다크모드 대응) */
+    .sight-card h4, .food-card h4, .warning-card h4, .info-card h4 {
+        color: #111111 !important;
+        margin-bottom: 6px;
+        font-weight: bold;
+    }
+    .sight-card p, .food-card p, .warning-card p, .info-card p,
+    .sight-card div, .food-card div, .warning-card div, .info-card div,
+    .sight-card span, .food-card span, .warning-card span, .info-card span {
+        color: #222222 !important;
+        font-size: 13.5px;
+        line-height: 1.4;
+    }
+    .card-detail { margin-top: 4px; }
 </style>
 """, unsafe_allow_html=True)
 
