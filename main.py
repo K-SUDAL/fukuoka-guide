@@ -15,21 +15,97 @@ st.set_page_config(
 st.markdown("""
 <style>
     .main .block-container { padding-top: 1rem; padding-bottom: 2rem; }
-    .stTabs [data-baseweb="tab-list"] { gap: 8px; }
-    .stTabs [data-baseweb="tab"] { font-size: 14px; font-weight: bold; padding: 8px 12px; }
+    .stTabs [data-baseweb="tab-list"] { gap: 6px; }
+    .stTabs [data-baseweb="tab"] { font-size: 13px; font-weight: bold; padding: 6px 10px; }
     .warning-card { background-color: #fff2f2; border-left: 5px solid #ff4d4d; padding: 12px; border-radius: 6px; margin-bottom: 12px; }
     .info-card { background-color: #f0f7ff; border-left: 5px solid #0066cc; padding: 12px; border-radius: 6px; margin-bottom: 12px; }
     .food-card { background-color: #f6fff5; border-left: 5px solid #28a745; padding: 12px; border-radius: 6px; margin-bottom: 12px; }
-    .food-detail { font-size: 13px; color: #444; margin-top: 4px; }
+    .sight-card { background-color: #fcf4ff; border-left: 5px solid #9b59b6; padding: 12px; border-radius: 6px; margin-bottom: 12px; }
+    .card-detail { font-size: 13px; color: #444; margin-top: 4px; }
 </style>
 """, unsafe_allow_html=True)
 
 st.title("⛩️ 후쿠오카 스마트 가이드")
-st.caption("📱 폰에서 한눈에 보는 현지 맛집 · 교통 · 주의지역")
+st.caption("📱 폰에서 한눈에 보는 현지 맛집 · 관광지 · 교통 · 주의지역")
 
 # 데이터 정의
 LOCATIONS = [
-    # --- 맛집 (Gourmet) : 구글 리뷰 최상위권 13곳 ---
+    # --- 관광지 (Sightseeing / Purple) ---
+    {
+        "name": "씨사이드 모모치 해변공원 (해수욕장)",
+        "cat": "Sightseeing",
+        "lat": 33.5936, "lng": 130.3514,
+        "hours": "24시간 열림 (상점가 10:00~20:00)",
+        "feature": "후쿠오카 타워 바로 앞 인공 모래사장 해변. 일몰 야경이 아름다우며 리조트 스타일의 마리존 상가가 위치함",
+        "desc": "후쿠오카 대표 도심형 해수욕장 & 산책로",
+        "icon": "camera", "color": "purple"
+    },
+    {
+        "name": "이토시마 야시마 해변 (이토시마 부부바위)",
+        "cat": "Sightseeing",
+        "lat": 33.6441, "lng": 130.1983,
+        "hours": "24시간 (드라이브 추천)",
+        "menu": "해변 카페거리 & 천국 계단 / 에메랄드빛 바다",
+        "feature": "후쿠오카 근교 최고 인기의 해변 휴양지. 흰 도리이와 부부바위, 하얀 모래사장이 펼쳐져 인생샷 성지로 불림",
+        "desc": "에메랄드빛 바다와 드라이브 코스로 유명한 해수욕장/해변",
+        "icon": "camera", "color": "purple"
+    },
+    {
+        "name": "후쿠오카시 동식물원 (동물원)",
+        "cat": "Sightseeing",
+        "lat": 33.5752, "lng": 130.3881,
+        "hours": "09:00 ~ 17:00 (월요일 휴무)",
+        "feature": "도심 근교 나비관, 열대 식물원과 함께 코끼리, 레서판다, 호랑이 등 다양한 동물을 만날 수 있는 가족 친화형 동물원",
+        "desc": "아기자기하고 조용한 도심형 식물원 & 동물원",
+        "icon": "camera", "color": "purple"
+    },
+    {
+        "name": "우미노나카미치 해상공원 & 동물원 (동물의 숲)",
+        "cat": "Sightseeing",
+        "lat": 33.6664, "lng": 130.3608,
+        "hours": "09:30 ~ 17:30 (시즌별 변동)",
+        "feature": "넓은 국영공원 내 위치한 체험형 동물원 '동물의 숲'. 카피바라, 캥거루, 람파카 등을 가까이서 직접 교감 가능",
+        "desc": "넓은 해상공원 안에서 동물들과 자유롭게 만나는 동물원",
+        "icon": "camera", "color": "purple"
+    },
+    {
+        "name": "오호리 공원",
+        "cat": "Sightseeing",
+        "lat": 33.5859, "lng": 130.3763,
+        "hours": "24시간 열림",
+        "feature": "성곽의 외호를 활용한 대형 호수공원. 호수 중앙을 가로지르는 산책로와 호수뷰 스타벅스가 인기가 높음",
+        "desc": "후쿠오카 시민들이 사랑하는 대표 도심 호수공원",
+        "icon": "camera", "color": "purple"
+    },
+    {
+        "name": "후쿠오카 타워",
+        "cat": "Sightseeing",
+        "lat": 33.5933, "lng": 130.3515,
+        "hours": "09:30 ~ 22:00 (입장마감 21:30)",
+        "feature": "높이 234m의 해안 타워로, 전망대에서 후쿠오카 시내 전체와 모모치 해변의 야경을 360도로 파노라마 감상 가능",
+        "desc": "후쿠오카를 상징하는 시그니처 랜드마크 타워",
+        "icon": "camera", "color": "purple"
+    },
+    {
+        "name": "캐널시티 하카타",
+        "cat": "Sightseeing",
+        "lat": 33.5898, "lng": 130.4108,
+        "hours": "10:00 ~ 21:00 (음식점 ~23:00)",
+        "feature": "운하를 중심으로 형성된 대형 복합 쇼핑몰. 매시 정각마다 펼쳐지는 화려한 분수 쇼와 건담 프로젝션 맵핑쇼가 볼거리",
+        "desc": "쇼핑, 엔터테인먼트, 분수쇼가 어우러진 복합 공간",
+        "icon": "camera", "color": "purple"
+    },
+    {
+        "name": "팀랩 포레스트 후쿠오카",
+        "cat": "Sightseeing",
+        "lat": 33.5928, "lng": 130.3626,
+        "hours": "11:00 ~ 20:00 (주말 10:00~)",
+        "feature": "스마트폰 앱을 활용해 환상적인 빛의 숲 속 동물을 포획하고 감상하는 몰입형 디지털 아트 전시관",
+        "desc": "보스 이조(BOSS E・ZO) 내 미디어아트 전시관",
+        "icon": "camera", "color": "purple"
+    },
+
+    # --- 맛집 (Gourmet / Green) ---
     {
         "name": "이치란 라멘 본점",
         "cat": "Gourmet",
@@ -46,7 +122,7 @@ LOCATIONS = [
         "lat": 33.5915, "lng": 130.3989,
         "hours": "11:00 ~ 03:00 (일요일 휴무)",
         "menu": "하카타 신신라멘 + 볶음밥/교자 세트",
-        "reason": "잡내 없이 깔끔하고 잡곡 육수처럼 부드러운 돼지 사골 국물로 현지인과 관광객 모두에게 극찬받는 곳",
+        "reason": "잡내 없이 깔끔하고 부드러운 돼지 사골 국물로 현지인과 관광객 모두에게 극찬받는 곳",
         "desc": "현지 유명 연예인 방문 인증샷이 가득한 돈코츠 맛집",
         "icon": "cutlery", "color": "green"
     },
@@ -66,7 +142,7 @@ LOCATIONS = [
         "lat": 33.5899, "lng": 130.4182,
         "hours": "11:00 ~ 22:00",
         "menu": "숯불구이 함바그 스테이크 (M/L) + 세트 메뉴",
-        "reason": "겉만 살짝 익혀 나온 정통 수제 함바그를 뜨거운 개인 달궈진 돌판에 직접 익혀 먹는 재미와 풍미",
+        "reason": "정통 수제 함바그를 뜨거운 달궈진 돌판에 직접 익혀 먹는 재미와 풍미",
         "desc": "항상 길게 줄을 서는 후쿠오카 필수 함바그 성지",
         "icon": "cutlery", "color": "green"
     },
@@ -76,7 +152,7 @@ LOCATIONS = [
         "lat": 33.5919, "lng": 130.4072,
         "hours": "10:30 ~ 20:00 (수요일 휴무)",
         "menu": "우나쥬 (Unaju)",
-        "reason": "1873년 창업한 150년 전통집으로, 겉은 바삭하고 속은 부드러운 특제 타레 소스 양념 장어구이의 진수",
+        "reason": "1873년 창업한 150년 전통집으로, 겉은 바삭하고 속은 부드러운 양념 장어구이의 진수",
         "desc": "나카스 강변에 위치한 역사 깊은 장어 전문점",
         "icon": "cutlery", "color": "green"
     },
@@ -86,7 +162,7 @@ LOCATIONS = [
         "lat": 33.5900, "lng": 130.4220,
         "hours": "17:00 ~ 24:00",
         "menu": "삼겹살 팽이버섯 말이, 닭껍질(토리카와)",
-        "reason": "숯불 향이 짙게 배어있는 꼬치구이와 시원한 생맥주 조합이 훌륭한 하카타 대표 이자카야",
+        "reason": "숯불 향이 짙게 배어있는 꼬치구이와 시원한 생맥주 조합이 훌륭함",
         "desc": "하루 일과를 마치고 맥주 한잔하기 가장 좋은 곳",
         "icon": "cutlery", "color": "green"
     },
@@ -96,7 +172,7 @@ LOCATIONS = [
         "lat": 33.5908, "lng": 130.4039,
         "hours": "07:00 ~ 22:30",
         "menu": "한정판 멘타이주 (명란덮밥) & 멘타이 츠케멘",
-        "reason": "특제 콤부(다시마)로 감싼 명란 한 개가 통째로 올라가는 고품격 명란요리로 아침 식사로도 인기",
+        "reason": "특제 다시마로 감싼 명란 한 개가 통째로 올라가는 고품격 명란요리",
         "desc": "후쿠오카 특산물 '명란' 요리 전문점",
         "icon": "cutlery", "color": "green"
     },
@@ -106,18 +182,8 @@ LOCATIONS = [
         "lat": 33.5892, "lng": 130.3995,
         "hours": "11:30 ~ 14:30, 17:00 ~ 21:00",
         "menu": "오늘의 특선 초밥 세트, 게살 크림 고로케",
-        "reason": "시장直送 가성비와 퀄리티를 모두 잡은 텐진 중심가 가성비 대중 스시집",
+        "reason": "가성비와 퀄리티를 모두 잡은 텐진 중심가 가성비 대중 스시집",
         "desc": "현지인과 여행객이 항상 붐비는 텐진 대표 스시집",
-        "icon": "cutlery", "color": "green"
-    },
-    {
-        "name": "타이치 (스미요시 모츠나베)",
-        "cat": "Gourmet",
-        "lat": 33.5867, "lng": 130.4125,
-        "hours": "17:00 ~ 23:30",
-        "menu": "간장(쇼유) 베이스 모츠나베",
-        "reason": "오오야마보다 담백하고 깔끔한 맛을 선호하는 이들에게 강력 추천하는 로컬 모츠나베 숨은 맛집",
-        "desc": "진한 현지인 비율 높고 단골이 많은 전골집",
         "icon": "cutlery", "color": "green"
     },
     {
@@ -126,38 +192,8 @@ LOCATIONS = [
         "lat": 33.5855, "lng": 130.4140,
         "hours": "11:15 ~ 15:00 (재료 소진 시 조기 중단)",
         "menu": "고보텐(우엉튀김) 자루우동 / 고기우동",
-        "reason": "갓 튀겨낸 큼직하고 바삭한 우엉튀김과 직접 뽑아낸 쫄깃·부드러운 하카타식 우동 면발의 조화",
+        "reason": "바삭한 우엉튀김과 직접 뽑아낸 쫄깃한 하카타식 우동 면발의 조화",
         "desc": "후쿠오카 3대 우동으로 꼽히는 수제 우동 전문점",
-        "icon": "cutlery", "color": "green"
-    },
-    {
-        "name": "하카타 잇샤도 (돈카츠)",
-        "cat": "Gourmet",
-        "lat": 33.5885, "lng": 130.4210,
-        "hours": "11:00 ~ 21:00",
-        "menu": "상로스카츠 (특 등심돈카츠)",
-        "reason": "두꺼운 육즙을 품은 프리미엄 흑돼지 돈카츠로 소금만 살짝 찍어 먹어도 뛰어난 풍미를 전달함",
-        "desc": "겉바속촉 육즙 가득한 두툼한 일식 돈카츠",
-        "icon": "cutlery", "color": "green"
-    },
-    {
-        "name": "하카타 잇푸도 본점",
-        "cat": "Gourmet",
-        "lat": 33.5858, "lng": 130.3967,
-        "hours": "11:00 ~ 22:00",
-        "menu": "시로마루 원조 / 아카마루 신아지",
-        "reason": "전 세계적으로 유명한 잇푸도의 총본산으로, 깔끔하면서 묵직한 오리지널 돈코츠 풍미를 고수함",
-        "desc": "이치란과 더불어 라멘계를 이끄는 대중적 라멘 명가",
-        "icon": "cutlery", "color": "green"
-    },
-    {
-        "name": "만체키 (돈카츠)",
-        "cat": "Gourmet",
-        "lat": 33.5925, "lng": 130.4010,
-        "hours": "11:30 ~ 15:00, 17:00 ~ 20:30",
-        "menu": "안심(히레) 카츠 정식",
-        "reason": "저온 구이 방식으로 튀겨내 분홍빛 육즙과 연하고 부드러운 안심 고기 식감이 일품",
-        "desc": "줄 서서 먹는 후쿠오카 돈카츠 최상위 맛집",
         "icon": "cutlery", "color": "green"
     },
 
@@ -172,13 +208,13 @@ LOCATIONS = [
 ]
 
 # 탭 메뉴
-tab1, tab2, tab3, tab4, tab5 = st.tabs(["📍 지도", "🍜 맛집", "⚠️ 위험지역", "✈️ 공항/교통", "🗓️ 추천코스"])
+tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(["📍 지도", "🎡 관광지", "🍜 맛집", "⚠️ 위험지역", "✈️ 공항/교통", "🗓️ 추천코스"])
 
 with tab1:
     st.subheader("🗺️ 통합 인터랙티브 지도")
 
     # 카테고리 필터
-    selected_cat = st.radio("카테고리 필터:", ["전체", "🍜 맛집", "⚠️ 위험/주의", "✈️ 공항/교통"], horizontal=True)
+    selected_cat = st.radio("카테고리 필터:", ["전체", "🎡 관광지", "🍜 맛집", "⚠️ 위험/주의", "✈️ 공항/교통"], horizontal=True)
 
     # 구글 지도 한국어 타일 URL (&hl=ko)
     google_maps_kr = "https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}&hl=ko"
@@ -186,7 +222,7 @@ with tab1:
     # Folium 지도 생성
     m = folium.Map(
         location=[33.5902, 130.4017], 
-        zoom_start=13, 
+        zoom_start=12, 
         tiles=google_maps_kr, 
         attr="Google"
     )
@@ -201,13 +237,14 @@ with tab1:
 
     for loc in LOCATIONS:
         # 필터링 로직
+        if selected_cat == "🎡 관광지" and loc["cat"] != "Sightseeing": continue
         if selected_cat == "🍜 맛집" and loc["cat"] != "Gourmet": continue
         if selected_cat == "⚠️ 위험/주의" and loc["cat"] != "Caution": continue
         if selected_cat == "✈️ 공항/교통" and loc["cat"] != "Transport": continue
 
         folium.Marker(
             location=[loc["lat"], loc["lng"]],
-            popup=folium.Popup(f"<b>{loc['name']}</b><br>{loc.get('menu', loc['desc'])}", max_width=250),
+            popup=folium.Popup(f"<b>{loc['name']}</b><br>{loc.get('feature', loc.get('menu', loc['desc']))}", max_width=250),
             tooltip=loc["name"],
             icon=folium.Icon(color=loc["color"], icon=loc["icon"], prefix="fa")
         ).add_to(m)
@@ -216,20 +253,33 @@ with tab1:
     st_folium(m, width="100%", height=380)
 
 with tab2:
+    st.subheader("🎡 주요 관광지 (해수욕장 & 동물원 포함)")
+    for loc in [l for l in LOCATIONS if l["cat"] == "Sightseeing"]:
+        st.markdown(f"""
+        <div class="sight-card">
+            <h4>{loc['name']}</h4>
+            <div class="card-detail">⏰ <b>운영시간:</b> {loc['hours']}</div>
+            <div class="card-detail">💡 <b>특징:</b> {loc['feature']}</div>
+            <br>
+            <a href="https://www.google.com/maps/search/?api=1&query={loc['lat']},{loc['lng']}" target="_blank">📍 구글맵에서 위치 및 길찾기</a>
+        </div>
+        """, unsafe_allow_html=True)
+
+with tab3:
     st.subheader("🍜 구글 리뷰 최상위 후쿠오카 맛집")
     for loc in [l for l in LOCATIONS if l["cat"] == "Gourmet"]:
         st.markdown(f"""
         <div class="food-card">
             <h4>{loc['name']}</h4>
-            <div class="food-detail">⏰ <b>영업시간:</b> {loc['hours']}</div>
-            <div class="food-detail">🍽️ <b>추천메뉴:</b> {loc['menu']}</div>
-            <div class="food-detail">💡 <b>추천이유:</b> {loc['reason']}</div>
+            <div class="card-detail">⏰ <b>영업시간:</b> {loc['hours']}</div>
+            <div class="card-detail">🍽️ <b>추천메뉴:</b> {loc['menu']}</div>
+            <div class="card-detail">💡 <b>추천이유:</b> {loc['reason']}</div>
             <br>
             <a href="https://www.google.com/maps/search/?api=1&query={loc['lat']},{loc['lng']}" target="_blank">📍 구글맵에서 길찾기</a>
         </div>
         """, unsafe_allow_html=True)
 
-with tab3:
+with tab4:
     st.subheader("⚠️ 야간 주의 & 위험 지역")
     st.warning("후쿠오카는 치안이 좋은 편이지만, 야간 유흥가에서는 아래 사항을 주의하세요!")
     for loc in [l for l in LOCATIONS if l["cat"] == "Caution"]:
@@ -241,7 +291,7 @@ with tab3:
         </div>
         """, unsafe_allow_html=True)
 
-with tab4:
+with tab5:
     st.subheader("✈️ 공항 및 교통 가이드")
     st.info("💡 **후쿠오카 공항 → 도심 이동법**\n1. 국제선 도착 후 **무료 셔틀버스** 타고 국내선 이동 (약 10~15분)\n2. 국내선 연결 **지하철 탑승** → 하카타역(5분), 텐진역(11분)")
     for loc in [l for l in LOCATIONS if l["cat"] == "Transport"]:
@@ -252,11 +302,11 @@ with tab4:
         </div>
         """, unsafe_allow_html=True)
 
-with tab5:
+with tab6:
     st.subheader("🗓️ 2박 3일 퀵 알짜 코스")
     with st.expander("1일차: 공항 도착 & 하카타/나카스"):
         st.write("・ 공항 도착 후 지하철로 하카타 이동\n・ 호텔 체크인 후 신신라멘 점심\n・ 캐널시티 쇼핑 & 분수쇼\n・ 저녁: 모츠나베 오오야마 & 나카스 야경 산책")
-    with st.expander("2일차: 텐진 쇼핑 & 오호리 공원"):
-        st.write("・ 오호리 공원 & 스타벅스에서 아침 산책\n・ 텐진 지하상가 및 파르코 백화점 쇼핑\n・ 저녁: 키와미야 함바그 또는 야키토리 탐방")
-    with st.expander("3일차: 다자이후 후시미 & 귀국"):
-        st.write("・ 버스/전철로 다자이후 천만궁 관광 (우메가에 모찌 맛보기)\n・ 공항 이동 후 면세점 쇼핑 및 귀국")
+    with st.expander("2일차: 모모치 해변, 동물원 & 텐진 쇼핑"):
+        st.write("・ 아침: 오호리 공원 및 후쿠오카시 동식물원 구경\n・ 오후: 모모치 해수욕장 & 후쿠오카 타워 일몰\n・ 저녁: 키와미야 함바그 또는 야키토리 탐방")
+    with st.expander("3일차: 이토시마 해변 드라이브 또는 다자이후 & 귀국"):
+        st.write("・ 이토시마 야시마 해변 드라이브 (사진 촬영)\n・ 공항 이동 후 면세점 쇼핑 및 귀국")
