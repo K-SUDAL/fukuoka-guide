@@ -52,8 +52,17 @@ with tab1:
     # 카테고리 필터
     selected_cat = st.radio("카테고리 필터:", ["전체", "🍜 맛집", "⚠️ 위험/주의", "✈️ 공항/교통"], horizontal=True)
 
+    # 한글 지원 브이월드(Vworld) 지도 타일 설정
+    vworld_tile = "https://xdworld.vworld.kr/2d/Base/service/{z}/{x}/{y}.png"
+    vworld_attr = "Vworld Map"
+
     # Folium 지도 생성 (후쿠오카 중심)
-    m = folium.Map(location=[33.5902, 130.4017], zoom_start=13, tiles="OpenStreetMap")
+    m = folium.Map(
+        location=[33.5902, 130.4017], 
+        zoom_start=13, 
+        tiles=vworld_tile, 
+        attr=vworld_attr
+    )
 
     for loc in LOCATIONS:
         # 필터링 로직
