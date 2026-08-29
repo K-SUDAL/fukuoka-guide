@@ -11,21 +11,19 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# 2. 안전하게 우측 하단 왕관/프로필 버튼 숨기기 (Root 레이아웃 타격 없음)
+# 2. 커스텀 CSS (카드 스타일 & 다크모드 글자색 고정)
 st.markdown("""
 <style>
-    /* 상단 메뉴 숨기기 */
+    /* 상단 메뉴 및 하단 툴바 기본 숨김 */
     #MainMenu { visibility: hidden; }
     footer { visibility: hidden; }
     
-    /* 하단 왕관 및 계정 아바타 버튼 투명화/숨김 */
-    .stAppDeployButton { display: none !important; }
-    [data-testid="manage-app-button"] { display: none !important; }
-    #ViewerBadge { display: none !important; }
-    div[class*="viewerBadge"] { display: none !important; }
-    iframe[title="streamlit_sharing_badge"] { display: none !important; }
+    /* 레이아웃 여백 조정 */
+    .main .block-container { padding-top: 0.5rem; padding-bottom: 2rem; }
+    .stTabs [data-baseweb="tab-list"] { gap: 4px; }
+    .stTabs [data-baseweb="tab"] { font-size: 13px; font-weight: bold; padding: 6px 8px; }
     
-    /* 카드 텍스트 색상 검은색으로 고정 (다크모드에서도 잘 보이도록 설정) */
+    /* 카드 텍스트 색상 검은색 고정 */
     .sight-card { background-color: #fcf4ff; border-left: 5px solid #9b59b6; padding: 12px; border-radius: 6px; margin-bottom: 12px; }
     .sight-card h4 { color: #111111 !important; margin-bottom: 6px; font-weight: bold; }
     
@@ -48,9 +46,9 @@ st.warning("⚠️ **카카오톡으로 접속하신 경우**\n지도가 제대�
 st.title("⛩️ 후쿠오카 스마트 가이드")
 st.caption("📱 폰에서 한눈에 보는 현지 맛집 · 관광지 · 교통 · 주의지역")
 
-# 4. 데이터 정의
+# 4. 전체 장소 데이터 (구글 리뷰 최상위 맛집 9곳 복구)
 LOCATIONS = [
-    # --- 관광지 ---
+    # --- 관광지 (Sightseeing / Purple) ---
     {
         "name": "씨사이드 모모치 해변공원 (해수욕장)",
         "cat": "Sightseeing",
@@ -111,146 +109,4 @@ LOCATIONS = [
         "cat": "Sightseeing",
         "lat": 33.5898, "lng": 130.4108,
         "hours": "10:00 ~ 21:00 (음식점 ~23:00)",
-        "feature": "운하를 중심으로 형성된 대형 복합 쇼핑몰. 매시 정각마다 펼쳐지는 화려한 분수 쇼와 건담 프로젝션 맵핑쇼가 볼거리",
-        "desc": "쇼핑, 엔터테인먼트, 분수쇼가 어우러진 복합 공간",
-        "icon": "camera", "color": "purple"
-    },
-
-    # --- 맛집 ---
-    {
-        "name": "이치란 라멘 본점",
-        "cat": "Gourmet",
-        "lat": 33.5932, "lng": 130.4045,
-        "hours": "24시간 영업 (연중무휴)",
-        "menu": "천연 돈코츠 라멘",
-        "reason": "독서실 형태의 칸막이 좌석에서 진하고 호불호 적은 시그니처 돈코츠 라멘을 맛볼 수 있음",
-        "desc": "후쿠오카 라멘의 상징이자 글로벌 본점",
-        "icon": "cutlery", "color": "green"
-    },
-    {
-        "name": "신신라멘 본점 (텐진)",
-        "cat": "Gourmet",
-        "lat": 33.5915, "lng": 130.3989,
-        "hours": "11:00 ~ 03:00 (일요일 휴무)",
-        "menu": "하카타 신신라멘 + 볶음밥/교자 세트",
-        "reason": "잡내 없이 깔끔하고 부드러운 돼지 사골 국물로 현지인과 관광객 모두에게 극찬받는 곳",
-        "desc": "현지 유명 연예인 방문 인증샷이 가득한 돈코츠 맛집",
-        "icon": "cutlery", "color": "green"
-    },
-    {
-        "name": "모츠나베 오오야마 (하카타역)",
-        "cat": "Gourmet",
-        "lat": 33.5898, "lng": 130.4207,
-        "hours": "11:00 ~ 23:00 (라스트오더 22:30)",
-        "menu": "모츠나베 (미소 맛)",
-        "reason": "깊은 된장 베이스 육수에 통통하고 고소한 소곱창이 들어가 한국인 입맛에 가장 잘 맞음",
-        "desc": "하카타역 직결로 접근성이 최고인 대표 곱창전골집",
-        "icon": "cutlery", "color": "green"
-    },
-    {
-        "name": "키와미야 함바그 (하카타점)",
-        "cat": "Gourmet",
-        "lat": 33.5899, "lng": 130.4182,
-        "hours": "11:00 ~ 22:00",
-        "menu": "숯불구이 함바그 스테이크 (M/L) + 세트 메뉴",
-        "reason": "정통 수제 함바그를 뜨거운 달궈진 돌판에 직접 익혀 먹는 재미와 풍미",
-        "desc": "항상 길게 줄을 서는 후쿠오카 필수 함바그 성지",
-        "icon": "cutlery", "color": "green"
-    },
-
-    # --- 위험/주의지역 ---
-    {"name": "나카스 유흥가 밤거리", "cat": "Caution", "lat": 33.5895, "lng": 130.4075, "desc": "⚠️ 야간 삐끼(호객행위) 주의 / 무료안내소 접근 금지", "icon": "warning", "color": "red"},
-
-    # --- 공항 & 교통 ---
-    {"name": "후쿠오카 공항 (FUK)", "cat": "Transport", "lat": 33.5859, "lng": 130.4507, "desc": "✈️ 도심까지 지하철로 5분 거리 (국제선-국내선 셔틀버스 탑승 필요)", "icon": "plane", "color": "blue"},
-    {"name": "하카타역 (교통 거점)", "cat": "Transport", "lat": 33.5897, "lng": 130.4207, "desc": "🚆 신칸센, JR, 버스터미널 결집지", "icon": "subway", "color": "blue"},
-]
-
-# 5. 탭 메뉴
-tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(["📍 지도", "🎡 관광지", "🍜 맛집", "⚠️ 위험지역", "✈️ 공항/교통", "🗓️ 추천코스"])
-
-with tab1:
-    st.subheader("🗺️ 통합 인터랙티브 지도")
-    selected_cat = st.radio("카테고리 필터:", ["전체", "🎡 관광지", "🍜 맛집", "⚠️ 위험/주의", "✈️ 공항/교통"], horizontal=True)
-
-    google_maps_kr = "https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}&hl=ko"
-
-    m = folium.Map(
-        location=[33.5902, 130.4017], 
-        zoom_start=12, 
-        tiles=google_maps_kr, 
-        attr="Google"
-    )
-
-    LocateControl(
-        auto_start=False,
-        flyTo=True,
-        keepCurrentZoomLevel=True,
-        strings={"title": "내 위치 보기", "popup": "현재 위치"}
-    ).add_to(m)
-
-    for loc in LOCATIONS:
-        if selected_cat == "🎡 관광지" and loc["cat"] != "Sightseeing": continue
-        if selected_cat == "🍜 맛집" and loc["cat"] != "Gourmet": continue
-        if selected_cat == "⚠️ 위험/주의" and loc["cat"] != "Caution": continue
-        if selected_cat == "✈️ 공항/교통" and loc["cat"] != "Transport": continue
-
-        folium.Marker(
-            location=[loc["lat"], loc["lng"]],
-            popup=folium.Popup(f"<b>{loc['name']}</b><br>{loc.get('feature', loc.get('menu', loc['desc']))}", max_width=250),
-            tooltip=loc["name"],
-            icon=folium.Icon(color=loc["color"], icon=loc["icon"], prefix="fa")
-        ).add_to(m)
-
-    st_folium(m, width="100%", height=380)
-
-with tab2:
-    st.subheader("🎡 주요 관광지")
-    for loc in [l for l in LOCATIONS if l["cat"] == "Sightseeing"]:
-        st.markdown(f"""
-        <div class="sight-card">
-            <h4>{loc['name']}</h4>
-            <div class="card-detail">⏰ <b>운영시간:</b> {loc['hours']}</div>
-            <div class="card-detail">💡 <b>특징:</b> {loc['feature']}</div>
-            <br>
-            <a href="https://www.google.com/maps/search/?api=1&query={loc['lat']},{loc['lng']}" target="_blank">📍 구글맵에서 위치 및 길찾기</a>
-        </div>
-        """, unsafe_allow_html=True)
-
-with tab3:
-    st.subheader("🍜 맛집 가이드")
-    for loc in [l for l in LOCATIONS if l["cat"] == "Gourmet"]:
-        st.markdown(f"""
-        <div class="food-card">
-            <h4>{loc['name']}</h4>
-            <div class="card-detail">⏰ <b>영업시간:</b> {loc['hours']}</div>
-            <div class="card-detail">🍽️ <b>추천메뉴:</b> {loc['menu']}</div>
-            <div class="card-detail">💡 <b>추천이유:</b> {loc['reason']}</div>
-            <br>
-            <a href="https://www.google.com/maps/search/?api=1&query={loc['lat']},{loc['lng']}" target="_blank">📍 구글맵에서 길찾기</a>
-        </div>
-        """, unsafe_allow_html=True)
-
-with tab4:
-    st.subheader("⚠️ 야간 주의 & 위험 지역")
-    for loc in [l for l in LOCATIONS if l["cat"] == "Caution"]:
-        st.markdown(f"""
-        <div class="warning-card">
-            <h4>🚨 {loc['name']}</h4>
-            <p>{loc['desc']}</p>
-        </div>
-        """, unsafe_allow_html=True)
-
-with tab5:
-    st.subheader("✈️ 공항 및 교통")
-    for loc in [l for l in LOCATIONS if l["cat"] == "Transport"]:
-        st.markdown(f"""
-        <div class="info-card">
-            <h4>{loc['name']}</h4>
-            <p>{loc['desc']}</p>
-        </div>
-        """, unsafe_allow_html=True)
-
-with tab6:
-    st.subheader("🗓️ 추천 코스")
-    st.write("1일차: 공항 → 하카타역 → 캐널시티\n2일차: 오호리 공원 → 모모치 해변 → 텐진")
+        "feature": "운하를 중심으로 형성된 대형 복합 쇼핑몰. 매시 정각마다 펼쳐지는 화려한 분수 쇼와 건담
