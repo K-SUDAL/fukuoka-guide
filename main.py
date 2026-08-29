@@ -11,6 +11,30 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
+# 2. 카카오톡 인앱 브라우저 감지 시 외부 브라우저(Chrome/Safari)로 자동 리다이렉트/전환 처리
+st.components.v1.html("""
+<script>
+    (function() {
+        var userAgent = navigator.userAgent.toLowerCase();
+        var targetUrl = location.href;
+
+        // 카카오톡 인앱 브라우저 환경 체크
+        if (userAgent.indexOf('kakaotalk') !== -1) {
+            // Android 환경일 경우 Chrome으로 강제 실행
+            if (userAgent.indexOf('android') !== -1) {
+                var chromeIntent = 'intent://' + targetUrl.replace(/https?:\/\//i, '') + '#Intent;scheme=https;package=com.android.chrome;end';
+                location.href = chromeIntent;
+            } 
+            // iOS (iPhone/iPad) 환경일 경우 Safari 열기
+            else if (userAgent.indexOf('iphone') !== -1 || userAgent.indexOf('ipad') !== -1 || userAgent.indexOf('ipod') !== -1) {
+                // iOS는 보안상 인앱 내 자동 이탈을 완벽 차단하므로 보조 가이드 제공
+                location.href = 'x-web-search://?' + targetUrl;
+            }
+        }
+    })();
+</script>
+""", height=0)
+
 # 커스텀 CSS (모바일 가독성 증대 + 독립형 웹사이트 스타일링)
 st.markdown("""
 <style>
