@@ -11,9 +11,18 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# 커스텀 CSS (모바일 가독성 증대)
+# 커스텀 CSS (모바일 가독성 증대 + 독립형 웹사이트 스타일링)
 st.markdown("""
 <style>
+    /* 상단 헤더, 툴바 및 우측 하단 왕관/Streamlit 배지 숨기기 */
+    header { visibility: hidden !important; }
+    footer { visibility: hidden !important; }
+    #MainMenu { visibility: hidden !important; }
+    .stAppDeployButton { display: none !important; }
+    [data-testid="stDecoration"] { display: none !important; }
+    [data-testid="stHeader"] { display: none !important; }
+    
+    /* 레이아웃 여백 및 모바일 가독성 조정 */
     .main .block-container { padding-top: 1rem; padding-bottom: 2rem; }
     .stTabs [data-baseweb="tab-list"] { gap: 6px; }
     .stTabs [data-baseweb="tab"] { font-size: 13px; font-weight: bold; padding: 6px 10px; }
