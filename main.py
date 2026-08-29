@@ -1,5 +1,6 @@
 import streamlit as st
 import folium
+from folium.plugins import LocateControl
 from streamlit_folium import st_folium
 
 # 1. 모바일 최적화 페이지 설정
@@ -189,6 +190,14 @@ with tab1:
         tiles=google_maps_kr, 
         attr="Google"
     )
+
+    # 내 위치 표시 버튼 추가 (LocateControl)
+    LocateControl(
+        auto_start=False,
+        flyTo=True,
+        keepCurrentZoomLevel=True,
+        strings={"title": "내 위치 보기", "popup": "현재 위치"}
+    ).add_to(m)
 
     for loc in LOCATIONS:
         # 필터링 로직
