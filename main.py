@@ -1,4 +1,17 @@
-# 커스텀 CSS (왕관, 계정 프로필, 헤더 및 툴바 완벽 숨김)
+import streamlit as st
+import folium
+from folium.plugins import LocateControl
+from streamlit_folium import st_folium
+
+# 1. 페이지 설정 (반드시 최상단에 위치)
+st.set_page_config(
+    page_title="후쿠오카 모바일 가이드",
+    page_icon="⛩️",
+    layout="centered",
+    initial_sidebar_state="collapsed"
+)
+
+# 2. 커스텀 CSS (왕관/계정 버튼 숨김 + 글자색 고정)
 st.markdown("""
 <style>
     /* 상단 헤더, 툴바 숨기기 */
@@ -6,7 +19,7 @@ st.markdown("""
     footer { visibility: hidden !important; }
     #MainMenu { visibility: hidden !important; }
     
-    /* 우측 하단 Streamlit 배지, 왕관(Host button), 계정 아바타 버튼 완벽 차단 */
+    /* 우측 하단 요소 완전 차단 */
     .stAppDeployButton { display: none !important; }
     [data-testid="stDecoration"] { display: none !important; }
     [data-testid="stHeader"] { display: none !important; }
@@ -18,7 +31,7 @@ st.markdown("""
     div[class*="viewerBadge"] { display: none !important; }
     iframe[title="streamlit_sharing_badge"] { display: none !important; }
     
-    /* 레이아웃 여백 및 글자 색상 고정 */
+    /* 레이아웃 및 글자 색상 고정 */
     .main .block-container { padding-top: 0.5rem; padding-bottom: 2rem; }
     .stTabs [data-baseweb="tab-list"] { gap: 4px; }
     .stTabs [data-baseweb="tab"] { font-size: 13px; font-weight: bold; padding: 6px 8px; }
