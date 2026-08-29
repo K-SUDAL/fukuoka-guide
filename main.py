@@ -20,7 +20,7 @@ st.markdown("""
     .info-card { background-color: #f0f7ff; border-left: 5px solid #0066cc; padding: 12px; border-radius: 6px; margin-bottom: 12px; }
     .food-card { background-color: #f6fff5; border-left: 5px solid #28a745; padding: 12px; border-radius: 6px; margin-bottom: 12px; }
 </style>
-""", unsafe_allow_allow_html=True)
+""", unsafe_allow_html=True)
 
 st.title("⛩️ 후쿠오카 스마트 가이드")
 st.caption("📱 폰에서 한눈에 보는 현지 맛집 · 교통 · 주의지역")
@@ -32,11 +32,11 @@ LOCATIONS = [
     {"name": "이치란 라멘 본점", "cat": "Gourmet", "lat": 33.5932, "lng": 130.4045, "desc": "24시간 운영하는 독서실형 라멘집", "icon": "cutlery", "color": "green"},
     {"name": "모츠나베 오오야마 (하카타)", "cat": "Gourmet", "lat": 33.5898, "lng": 130.4207, "desc": "미소(된장) 맛 모츠나베 강추", "icon": "cutlery", "color": "green"},
     {"name": "나카스 야타이 거리", "cat": "Gourmet", "lat": 33.5905, "lng": 130.4061, "desc": "강변 포장마차 거리 (바가지 가격 주의)", "icon": "cutlery", "color": "green"},
-    
+
     # 위험/주의지역 (Red)
     {"name": "나카스 유흥가 밤거리", "cat": "Caution", "lat": 33.5895, "lng": 130.4075, "desc": "⚠️ 야간 삐끼(호객행위) 주의 / 무료안내소 접근 금지", "icon": "warning", "color": "red"},
     {"name": "텐진 오야불루바드 야간구역", "cat": "Caution", "lat": 33.5880, "lng": 130.3990, "desc": "⚠️ 늦은 밤 과도한 호객행위 주의", "icon": "warning", "color": "red"},
-    
+
     # 공항 & 교통 (Blue)
     {"name": "후쿠오카 공항 (FUK)", "cat": "Transport", "lat": 33.5859, "lng": 130.4507, "desc": "✈️ 도심까지 지하철로 5분 거리 (국제선-국내선 셔틀버스 탑승 필요)", "icon": "plane", "color": "blue"},
     {"name": "하카타역 (교통 거점)", "cat": "Transport", "lat": 33.5897, "lng": 130.4207, "desc": "🚆 신칸센, JR, 버스터미널 결집지", "icon": "subway", "color": "blue"},
@@ -48,26 +48,26 @@ tab1, tab2, tab3, tab4, tab5 = st.tabs(["📍 지도", "🍜 맛집", "⚠️ �
 
 with tab1:
     st.subheader("🗺️ 통합 인터랙티브 지도")
-    
+
     # 카테고리 필터
     selected_cat = st.radio("카테고리 필터:", ["전체", "🍜 맛집", "⚠️ 위험/주의", "✈️ 공항/교통"], horizontal=True)
-    
+
     # Folium 지도 생성 (후쿠오카 중심)
     m = folium.Map(location=[33.5902, 130.4017], zoom_start=13, tiles="OpenStreetMap")
-    
+
     for loc in LOCATIONS:
         # 필터링 로직
         if selected_cat == "🍜 맛집" and loc["cat"] != "Gourmet": continue
         if selected_cat == "⚠️ 위험/주의" and loc["cat"] != "Caution": continue
         if selected_cat == "✈️ 공항/교통" and loc["cat"] != "Transport": continue
-        
+
         folium.Marker(
             location=[loc["lat"], loc["lng"]],
             popup=folium.Popup(f"<b>{loc['name']}</b><br>{loc['desc']}", max_width=250),
             tooltip=loc["name"],
             icon=folium.Icon(color=loc["color"], icon=loc["icon"], prefix="fa")
         ).add_to(m)
-        
+
     # 모바일용 지도 크기 설정
     st_folium(m, width="100%", height=380)
 
