@@ -5,7 +5,7 @@ from streamlit_folium import st_folium
 
 # 1. 페이지 설정
 st.set_page_config(
-    page_title="수달의 후쿠오카 여행",
+    page_title="수달의후쿠오카여행",
     page_icon="⛩️",
     layout="centered",
     initial_sidebar_state="collapsed"
