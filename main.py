@@ -11,34 +11,10 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# 2. 카카오톡 인앱 브라우저 감지 시 외부 브라우저(Chrome/Safari)로 자동 리다이렉트/전환 처리
-st.components.v1.html("""
-<script>
-    (function() {
-        var userAgent = navigator.userAgent.toLowerCase();
-        var targetUrl = location.href;
-
-        // 카카오톡 인앱 브라우저 환경 체크
-        if (userAgent.indexOf('kakaotalk') !== -1) {
-            // Android 환경일 경우 Chrome으로 강제 실행
-            if (userAgent.indexOf('android') !== -1) {
-                var chromeIntent = 'intent://' + targetUrl.replace(/https?:\/\//i, '') + '#Intent;scheme=https;package=com.android.chrome;end';
-                location.href = chromeIntent;
-            } 
-            // iOS (iPhone/iPad) 환경일 경우 Safari 열기
-            else if (userAgent.indexOf('iphone') !== -1 || userAgent.indexOf('ipad') !== -1 || userAgent.indexOf('ipod') !== -1) {
-                // iOS는 보안상 인앱 내 자동 이탈을 완벽 차단하므로 보조 가이드 제공
-                location.href = 'x-web-search://?' + targetUrl;
-            }
-        }
-    })();
-</script>
-""", height=0)
-
-# 커스텀 CSS (모바일 가독성 증대 + 독립형 웹사이트 스타일링)
+# 커스텀 CSS (독립형 웹 스타일링 + 글자 색상 고정)
 st.markdown("""
 <style>
-    /* 상단 헤더, 툴바 및 우측 하단 왕관/Streamlit 배지 숨기기 */
+    /* 헤더, 툴바, 왕관 버튼 완전 숨기기 */
     header { visibility: hidden !important; }
     footer { visibility: hidden !important; }
     #MainMenu { visibility: hidden !important; }
@@ -47,16 +23,29 @@ st.markdown("""
     [data-testid="stHeader"] { display: none !important; }
     
     /* 레이아웃 여백 및 모바일 가독성 조정 */
-    .main .block-container { padding-top: 1rem; padding-bottom: 2rem; }
-    .stTabs [data-baseweb="tab-list"] { gap: 6px; }
-    .stTabs [data-baseweb="tab"] { font-size: 13px; font-weight: bold; padding: 6px 10px; }
-    .warning-card { background-color: #fff2f2; border-left: 5px solid #ff4d4d; padding: 12px; border-radius: 6px; margin-bottom: 12px; }
-    .info-card { background-color: #f0f7ff; border-left: 5px solid #0066cc; padding: 12px; border-radius: 6px; margin-bottom: 12px; }
-    .food-card { background-color: #f6fff5; border-left: 5px solid #28a745; padding: 12px; border-radius: 6px; margin-bottom: 12px; }
+    .main .block-container { padding-top: 0.5rem; padding-bottom: 2rem; }
+    .stTabs [data-baseweb="tab-list"] { gap: 4px; }
+    .stTabs [data-baseweb="tab"] { font-size: 13px; font-weight: bold; padding: 6px 8px; }
+    
+    /* 카드 스타일 (글자 색상을 검은색으로 고정하여 안 보이는 문제 해결) */
     .sight-card { background-color: #fcf4ff; border-left: 5px solid #9b59b6; padding: 12px; border-radius: 6px; margin-bottom: 12px; }
-    .card-detail { font-size: 13px; color: #444; margin-top: 4px; }
+    .sight-card h4 { color: #111111 !important; margin-bottom: 6px; font-weight: bold; }
+    
+    .food-card { background-color: #f6fff5; border-left: 5px solid #28a745; padding: 12px; border-radius: 6px; margin-bottom: 12px; }
+    .food-card h4 { color: #111111 !important; margin-bottom: 6px; font-weight: bold; }
+    
+    .warning-card { background-color: #fff2f2; border-left: 5px solid #ff4d4d; padding: 12px; border-radius: 6px; margin-bottom: 12px; }
+    .warning-card h4 { color: #111111 !important; margin-bottom: 6px; font-weight: bold; }
+    
+    .info-card { background-color: #f0f7ff; border-left: 5px solid #0066cc; padding: 12px; border-radius: 6px; margin-bottom: 12px; }
+    .info-card h4 { color: #111111 !important; margin-bottom: 6px; font-weight: bold; }
+    
+    .card-detail { font-size: 13px; color: #333333 !important; margin-top: 4px; }
 </style>
 """, unsafe_allow_html=True)
+
+# 2. 카카오톡 접속 안내 카드 (카카오톡 환경일 때 안내)
+st.warning("⚠️ **카카오톡으로 열으셨나요?**\n지도가 제대로 안 보일 경우 우측 상단 `⋮` (또는 하단 `⋯`)을 누른 후 **'다른 브라우저로 열기'**를 선택해 주세요!")
 
 st.title("⛩️ 후쿠오카 스마트 가이드")
 st.caption("📱 폰에서 한눈에 보는 현지 맛집 · 관광지 · 교통 · 주의지역")
