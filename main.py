@@ -11,7 +11,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# 2. 커스텀 CSS (다크모드 글자색 고정 및 타이틀 스타일)
+# 2. 커스텀 CSS (다크모드 글자 안 보임 현상 완벽 해결)
 st.markdown("""
 <style>
     #MainMenu { visibility: hidden; }
@@ -19,28 +19,26 @@ st.markdown("""
     
     .main .block-container { padding-top: 0.5rem; padding-bottom: 2rem; }
     .stTabs [data-baseweb="tab-list"] { gap: 4px; }
-    .stTabs [data-baseweb="tab"] { font-size: 13px; font-weight: bold; padding: 6px 8px; }
+    .stTabs [data-baseweb="tab"] { font-size: 14px; font-weight: bold; padding: 6px 12px; }
     
     /* 카드 공통 스타일 및 글자색 강제 고정 */
-    .sight-card, .food-card, .warning-card, .info-card {
+    .sight-card, .food-card {
         padding: 12px;
         border-radius: 6px;
         margin-bottom: 12px;
     }
     .sight-card { background-color: #fcf4ff; border-left: 5px solid #9b59b6; }
     .food-card { background-color: #f6fff5; border-left: 5px solid #28a745; }
-    .warning-card { background-color: #fff2f2; border-left: 5px solid #ff4d4d; }
-    .info-card { background-color: #f0f7ff; border-left: 5px solid #0066cc; }
 
     /* 카드 내부 제목 및 본문 글자색 강제 고정 (다크모드 대응) */
-    .sight-card h4, .food-card h4, .warning-card h4, .info-card h4 {
+    .sight-card h4, .food-card h4 {
         color: #111111 !important;
         margin-bottom: 6px;
         font-weight: bold;
     }
-    .sight-card p, .food-card p, .warning-card p, .info-card p,
-    .sight-card div, .food-card div, .warning-card div, .info-card div,
-    .sight-card span, .food-card span, .warning-card span, .info-card span {
+    .sight-card p, .food-card p,
+    .sight-card div, .food-card div,
+    .sight-card span, .food-card span {
         color: #222222 !important;
         font-size: 13.5px;
         line-height: 1.4;
@@ -53,10 +51,11 @@ st.markdown("""
 st.warning("⚠️ **카카오톡으로 접속하신 경우**\n지도가 제대로 안 뜨면 우측 상단 `⋮` (또는 하단 `⋯`) 누르고 **'다른 브라우저로 열기'**(Safari/Chrome)를 선택해 주세요!")
 
 st.title("🦦 수달의 후쿠오카 여행")
-st.caption("📱 폰에서 한눈에 보는 현지 맛집 · 관광지 · 교통 · 주의지역")
+st.caption("📱 폰에서 한눈에 보는 현지 맛집 · 관광지 가이드")
 
-# 4. 전체 데이터
+# 4. 전체 데이터 (관광지 및 맛집만 유지)
 LOCATIONS = [
+    # --- 관광지 (Sightseeing / Purple) ---
     {
         "name": "씨사이드 모모치 해변공원 (해수욕장)",
         "cat": "Sightseeing",
@@ -71,7 +70,6 @@ LOCATIONS = [
         "cat": "Sightseeing",
         "lat": 33.6441, "lng": 130.1983,
         "hours": "24시간 (드라이브 추천)",
-        "menu": "해변 카페거리 & 천국 계단 / 에메랄드빛 바다",
         "feature": "후쿠오카 근교 최고 인기의 해변 휴양지. 흰 도리이와 부부바위, 하얀 모래사장이 펼쳐져 인생샷 성지로 불림",
         "desc": "에메랄드빛 바다와 드라이브 코스로 유명한 해수욕장/해변",
         "icon": "camera", "color": "purple"
@@ -90,7 +88,7 @@ LOCATIONS = [
         "cat": "Sightseeing",
         "lat": 33.6664, "lng": 130.3608,
         "hours": "09:30 ~ 17:30 (시즌별 변동)",
-        "feature": "넓은 국영공원 내 위치한 체험형 동물원 동물의 숲. 카피바라, 캥거루, 람파카 등을 가까이서 직접 교감 가능",
+        "feature": "넓은 국영공원 내 위치한 체험형 동물원 동물의 숲. 카피바라, 캥거루, 알파카 등을 가까이서 직접 교감 가능",
         "desc": "넓은 해상공원 안에서 동물들과 자유롭게 만나는 동물원",
         "icon": "camera", "color": "purple"
     },
@@ -221,24 +219,15 @@ LOCATIONS = [
         "reason": "바삭한 우엉튀김과 직접 뽑아낸 쫄깃한 하카타식 우동 면발의 조화",
         "desc": "후쿠오카 3대 우동으로 꼽히는 수제 우동 전문점",
         "icon": "cutlery", "color": "green"
-    },
-
-    # --- 위험/주의지역 (Red) ---
-    {"name": "나카스 유흥가 밤거리", "cat": "Caution", "lat": 33.5895, "lng": 130.4075, "desc": "⚠️ 야간 삐끼(호객행위) 주의 / 무료안내소 접근 금지", "icon": "warning", "color": "red"},
-    {"name": "텐진 오야불루바드 야간구역", "cat": "Caution", "lat": 33.5880, "lng": 130.3990, "desc": "⚠️ 늦은 밤 과도한 호객행위 주의", "icon": "warning", "color": "red"},
-
-    # --- 공항 & 교통 (Blue) ---
-    {"name": "후쿠오카 공항 (FUK)", "cat": "Transport", "lat": 33.5859, "lng": 130.4507, "desc": "✈️ 도심까지 지하철로 5분 거리 (국제선-국내선 셔틀버스 탑승 필요)", "icon": "plane", "color": "blue"},
-    {"name": "하카타역 (교통 거점)", "cat": "Transport", "lat": 33.5897, "lng": 130.4207, "desc": "🚆 신칸센, JR, 버스터미널 결집지", "icon": "subway", "color": "blue"},
-    {"name": "텐진역 (쇼핑 거점)", "cat": "Transport", "lat": 33.5916, "lng": 130.3989, "desc": "🛍️ 지하상가 및 백화점 중심지", "icon": "subway", "color": "blue"},
+    }
 ]
 
-# 5. 탭 구성
-tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(["📍 지도", "🎡 관광지", "🍜 맛집", "⚠️ 위험지역", "✈️ 공항/교통", "🗓️ 추천코스"])
+# 5. 탭 구성 (3개 탭으로 정리)
+tab1, tab2, tab3 = st.tabs(["📍 지도", "🎡 관광지", "🍜 맛집"])
 
 with tab1:
     st.subheader("🗺️ 통합 인터랙티브 지도")
-    selected_cat = st.radio("카테고리 필터:", ["전체", "🎡 관광지", "🍜 맛집", "⚠️ 위험/주의", "✈️ 공항/교통"], horizontal=True)
+    selected_cat = st.radio("카테고리 필터:", ["전체", "🎡 관광지", "🍜 맛집"], horizontal=True)
 
     google_maps_kr = "https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}&hl=ko"
 
@@ -259,8 +248,6 @@ with tab1:
     for loc in LOCATIONS:
         if selected_cat == "🎡 관광지" and loc["cat"] != "Sightseeing": continue
         if selected_cat == "🍜 맛집" and loc["cat"] != "Gourmet": continue
-        if selected_cat == "⚠️ 위험/주의" and loc["cat"] != "Caution": continue
-        if selected_cat == "✈️ 공항/교통" and loc["cat"] != "Transport": continue
 
         folium.Marker(
             location=[loc["lat"], loc["lng"]],
@@ -297,33 +284,3 @@ with tab3:
             <a href="https://www.google.com/maps/search/?api=1&query={loc['lat']},{loc['lng']}" target="_blank">📍 구글맵에서 길찾기</a>
         </div>
         """, unsafe_allow_html=True)
-
-with tab4:
-    st.subheader("⚠️ 야간 주의 & 위험 지역")
-    for loc in [l for l in LOCATIONS if l["cat"] == "Caution"]:
-        st.markdown(f"""
-        <div class="warning-card">
-            <h4>🚨 {loc['name']}</h4>
-            <p>{loc['desc']}</p>
-        </div>
-        """, unsafe_allow_html=True)
-
-with tab5:
-    st.subheader("✈️ 공항 및 교통 가이드")
-    st.info("💡 **후쿠오카 공항 → 도심 이동법**\n1. 국제선 도착 후 **무료 셔틀버스** 타고 국내선 이동 (약 10~15분)\n2. 국내선 연결 **지하철 탑승** → 하카타역(5분), 텐진역(11분)")
-    for loc in [l for l in LOCATIONS if l["cat"] == "Transport"]:
-        st.markdown(f"""
-        <div class="info-card">
-            <h4>{loc['name']}</h4>
-            <p>{loc['desc']}</p>
-        </div>
-        """, unsafe_allow_html=True)
-
-with tab6:
-    st.subheader("🗓️ 2박 3일 퀵 알짜 코스")
-    with st.expander("1일차: 공항 도착 & 하카타/나카스"):
-        st.write("・ 공항 도착 후 지하철로 하카타 이동\n・ 호텔 체크인 후 신신라멘 점심\n・ 캐널시티 쇼핑 & 분수쇼\n・ 저녁: 모츠나베 오오야마 & 나카스 야경 산책")
-    with st.expander("2일차: 모모치 해변, 동물원 & 텐진 쇼핑"):
-        st.write("・ 아침: 오호리 공원 및 후쿠오카시 동식물원 구경\n・ 오후: 모모치 해수욕장 & 후쿠오카 타워 일몰\n・ 저녁: 키와미야 함바그 또는 야키토리 탐방")
-    with st.expander("3일차: 이토시마 해변 드라이브 또는 다자이후 & 귀국"):
-        st.write("・ 이토시마 야시마 해변 드라이브 (사진 촬영)\n・ 공항 이동 후 면세점 쇼핑 및 귀국")
