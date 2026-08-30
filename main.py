@@ -5,13 +5,13 @@ from streamlit_folium import st_folium
 
 # 1. 페이지 설정
 st.set_page_config(
-    page_title="수달의 후쿠오카 여행",
+    page_title="수달의 후쿠오카 여행 & 운전 가이드",
     page_icon="🦦",
     layout="centered",
     initial_sidebar_state="collapsed"
 )
 
-# 2. 커스텀 CSS (다크모드 글자 안 보임 현상 완벽 해결)
+# 2. 커스텀 CSS (다크모드 글자 안 보임 현상 완벽 해결 및 카드가이드 스타일)
 st.markdown("""
 <style>
     #MainMenu { visibility: hidden; }
@@ -19,41 +19,44 @@ st.markdown("""
     
     .main .block-container { padding-top: 0.5rem; padding-bottom: 2rem; }
     .stTabs [data-baseweb="tab-list"] { gap: 4px; }
-    .stTabs [data-baseweb="tab"] { font-size: 14px; font-weight: bold; padding: 6px 12px; }
+    .stTabs [data-baseweb="tab"] { font-size: 13.5px; font-weight: bold; padding: 6px 10px; }
     
     /* 카드 공통 스타일 및 글자색 강제 고정 */
-    .sight-card, .food-card {
+    .sight-card, .food-card, .drive-card, .sign-card {
         padding: 12px;
         border-radius: 6px;
         margin-bottom: 12px;
     }
     .sight-card { background-color: #fcf4ff; border-left: 5px solid #9b59b6; }
     .food-card { background-color: #f6fff5; border-left: 5px solid #28a745; }
+    .drive-card { background-color: #fff9e6; border-left: 5px solid #f39c12; }
+    .sign-card { background-color: #f2f7ff; border-left: 5px solid #2980b9; }
 
     /* 카드 내부 제목 및 본문 글자색 강제 고정 (다크모드 대응) */
-    .sight-card h4, .food-card h4 {
+    .sight-card h4, .food-card h4, .drive-card h4, .sign-card h4 {
         color: #111111 !important;
         margin-bottom: 6px;
         font-weight: bold;
     }
-    .sight-card p, .food-card p,
-    .sight-card div, .food-card div,
-    .sight-card span, .food-card span {
+    .sight-card p, .food-card p, .drive-card p, .sign-card p,
+    .sight-card div, .food-card div, .drive-card div, .sign-card div,
+    .sight-card span, .food-card span, .drive-card span, .sign-card span {
         color: #222222 !important;
         font-size: 13.5px;
-        line-height: 1.4;
+        line-height: 1.5;
     }
     .card-detail { margin-top: 4px; }
+    .highlight-danger { color: #d9534f !important; font-weight: bold; }
 </style>
 """, unsafe_allow_html=True)
 
 # 3. 인앱 브라우저 안내
 st.warning("⚠️ **카카오톡으로 접속하신 경우**\n지도가 제대로 안 뜨면 우측 상단 `⋮` (또는 하단 `⋯`) 누르고 **'다른 브라우저로 열기'**(Safari/Chrome)를 선택해 주세요!")
 
-st.title("🦦 수달의 후쿠오카 여행")
-st.caption("📱 폰에서 한눈에 보는 현지 맛집 · 관광지 가이드")
+st.title("🦦 수달의 후쿠오카 여행 & 운전")
+st.caption("📱 폰에서 한눈에 보는 맛집 · 관광지 · 일본 렌터카 운전 꿀팁")
 
-# 4. 전체 데이터 (관광지 및 맛집만 유지)
+# 4. 전체 데이터 (관광지 및 맛집)
 LOCATIONS = [
     # --- 관광지 (Sightseeing / Purple) ---
     {
@@ -222,8 +225,8 @@ LOCATIONS = [
     }
 ]
 
-# 5. 탭 구성 (3개 탭으로 정리)
-tab1, tab2, tab3 = st.tabs(["📍 지도", "🎡 관광지", "🍜 맛집"])
+# 5. 탭 구성 (4개 탭)
+tab1, tab2, tab3, tab4 = st.tabs(["📍 지도", "🎡 관광지", "🍜 맛집", "🚗 운전 가이드"])
 
 with tab1:
     st.subheader("🗺️ 통합 인터랙티브 지도")
@@ -284,3 +287,47 @@ with tab3:
             <a href="https://www.google.com/maps/search/?api=1&query={loc['lat']},{loc['lng']}" target="_blank">📍 구글맵에서 길찾기</a>
         </div>
         """, unsafe_allow_html=True)
+
+with tab4:
+    st.subheader("🚗 일본 렌터카 운전 필수 핵심 가이드")
+    st.caption("한국 운전자가 가장 많이 실수하고 단속되는 핵심 도로 규칙")
+
+    st.markdown("""
+    <div class="drive-card">
+        <h4>🚨 가장 중요한 핵심 3가지 (한국과 반대)</h4>
+        <div>1. <span class="highlight-danger">좌측통행 (좌회전은 작게, 우회전은 크게)</span><br>
+        - 운전석이 오른쪽에 있습니다. "운전자가 도로 중앙선 쪽에 위치한다"를 계속 기억하세요.</div>
+        <div style="margin-top:6px;">2. <span class="highlight-danger">빨간 불에 좌회전 절대로 금지!</span><br>
+        - 한국과 달리 일본은 적색 신호 시 좌회전 포함 모든 통행이 불가합니다. (화살표 신호가 켜질 때만 가능)</div>
+        <div style="margin-top:6px;">3. <span class="highlight-danger">우회전은 기본 비보호!</span><br>
+        - 파란 불(직진 신호)에 맞은편 직진 차가 없을 때 우회전합니다. 직진 차/보행자가 항상 최우선입니다.</div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    st.markdown("""
+    <div class="sign-card">
+        <h4>🛑 반드시 외워야 할 핵심 표지판 & 노면 표시</h4>
+        <div><b>1. 🛑 止まれ (토마레 / STOP) - 빨간 역삼각형</b><br>
+        - 일본 경찰 단속 1위! <b>바퀴를 완전히 멈추고 3초간 서야 합니다.</b> 서행으로 지나가면 무조건 단속 대상입니다.</div>
+        <div style="margin-top:8px;"><b>2. 🛤️ 철길 건널목 (踏切 - 후미키리)</b><br>
+        - 차단기가 올려져 있어도 <b>정지선에서 100% 일단 멈춤 후</b> 좌우 확인하고 건너야 합니다.</div>
+        <div style="margin-top:8px;"><b>3. 🅿️ 주차 위반</b><br>
+        - 일본은 잠시 갓길 주차도 즉시 과태료(약 1~2만 엔)가 부과됩니다. 무조건 코인 주차장(コインパーキング)을 이용하세요.</div>
+        <div style="margin-top:8px;"><b>4. 🚌 버스 전용 차로 (バス専用 / 優先)</b><br>
+        - 출퇴근 시간대 노선버스 전용차로는 일반 차량 통행 불가입니다.</div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    st.markdown("""
+    <div class="drive-card">
+        <h4>⛽ 주유소 및 기타 유용한 팁</h4>
+        <div><b>1. 기름 종류 (휘발유는 레귤러!)</b><br>
+        - <b>레귤러 (レギュラー - 빨간색 노즐):</b> 일반 휘발유 (대부분의 렌터카)<br>
+        - <b>하이오쿠 (ハイオク - 노란색 노즐):</b> 고급 휘발유<br>
+        - <b>경유 (軽油 - 초록색 노즐):</b> 디젤 차량전용 (실수 주의!)</div>
+        <div style="margin-top:8px;"><b>2. 만탄(滿炭) 반납</b><br>
+        - 차량 반납 시 주유소에서 기름을 가득 채우고 영수증을 렌터카 업체에 제출해야 합니다.</div>
+        <div style="margin-top:8px;"><b>3. KEP (Kyushu Expressway Pass)</b><br>
+        - 규슈 고속도로 패스를 렌트 시 신청하면 톨게이트 비용을 획기적으로 절약할 수 있습니다. (ETC 카드 필수)</div>
+    </div>
+    """, unsafe_allow_html=True)
